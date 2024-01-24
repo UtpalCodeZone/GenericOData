@@ -1,0 +1,137 @@
+CREATE TABLE public.uom (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	"name" varchar(200) NOT NULL,
+	code varchar(50) NOT NULL,
+	description varchar(1000) NULL,
+	status bool NOT NULL DEFAULT true,
+	deleted bool NOT NULL DEFAULT false,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	tenant_id int4 NOT NULL,
+	audit json NOT NULL,
+	CONSTRAINT uom_pk PRIMARY KEY (id),
+	CONSTRAINT uom_uk_row_id UNIQUE (row_id)
+);
+
+CREATE TABLE public.site (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	"name" varchar(400) NOT NULL,
+	prefix varchar(20) NULL,
+	code varchar(200) NOT NULL,
+	description varchar(1500) NULL,
+	"comments" varchar(1500) NULL,
+	status bool NOT NULL DEFAULT true,
+	deleted bool NULL DEFAULT false,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	CONSTRAINT site_pk PRIMARY KEY (id),
+	CONSTRAINT site_uk_code UNIQUE (code),
+	CONSTRAINT site_uk_prefix UNIQUE (prefix),
+	CONSTRAINT site_uk_row_id UNIQUE (row_id)
+);
+
+CREATE TABLE public."parameter" (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	uom_id int4 NOT NULL,
+	"name" varchar(200) NOT NULL,
+	code varchar(100) NOT NULL,
+	"comments" varchar(1500) NULL,
+	deleted bool NOT NULL DEFAULT false,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	status bool NOT NULL DEFAULT true,
+	tenant_id int4 NOT NULL,
+	audit json NOT NULL,
+	CONSTRAINT parameter_pk PRIMARY KEY (id),
+	CONSTRAINT parameter_uk_code UNIQUE (code),
+	CONSTRAINT parameter_uk_row_id UNIQUE (row_id)
+);
+
+CREATE TABLE public."os" (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	"name" varchar NOT NULL,
+	code varchar NOT NULL,
+	status bool NULL DEFAULT true,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	deleted bool NOT NULL DEFAULT false,
+	CONSTRAINT os_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE public.edge (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	site_id int4 NOT NULL,
+	name varchar(200) NOT NULL,
+	code varchar(400) NOT NULL,
+	make varchar(400) NULL,
+	model varchar(400) NULL,
+	mac_id varchar(100) NULL,
+	ip_address varchar(100) NULL,
+	os_id int4 NOT NULL,
+	"comments" varchar(1500) NULL,
+	status bool NOT NULL DEFAULT true,
+	deleted bool NOT NULL DEFAULT false,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_date timestamptz NULL,
+	created_user int4 NOT NULL,
+	modified_user int4 NULL,
+	tenant_id int4 NOT NULL,
+	is_provisioned bool NOT NULL DEFAULT false,
+	audit json NOT NULL,
+	CONSTRAINT edge_pk PRIMARY KEY (id),
+	CONSTRAINT edge_uk_code UNIQUE (code),
+	CONSTRAINT edge_uk_row_id UNIQUE (row_id),
+	CONSTRAINT edge_fk_os FOREIGN KEY (os_id) REFERENCES public.os(id)
+);
+
+CREATE TABLE public.protocol (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	"name" varchar(200) NOT NULL,
+	code varchar(400) NOT NULL,
+	status bool NOT NULL DEFAULT true,
+	deleted bool NOT NULL DEFAULT false,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	tenant_id int4 NOT NULL,
+	audit json NOT NULL,
+	CONSTRAINT protocol_pk PRIMARY KEY (id),
+	CONSTRAINT protocol_uk_code UNIQUE (code),
+	CONSTRAINT protocol_uk_row_id UNIQUE (row_id)
+);
+
+CREATE TABLE public.endpoint (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE),
+	row_id uuid NOT NULL DEFAULT gen_random_uuid(),
+	protocol_id int4 NOT NULL,
+	"name" varchar(200) NOT NULL,
+	server_url varchar(100) NOT NULL,
+	setting json NOT NULL,
+	status bool NOT NULL DEFAULT true,
+	deleted bool NOT NULL DEFAULT false,
+	created_user int4 NOT NULL,
+	created_date timestamptz NOT NULL DEFAULT timezone('utc'::text, now()),
+	modified_user int4 NULL,
+	modified_date timestamptz NULL,
+	tenant_id int4 NOT NULL,
+	audit json NOT NULL,
+	CONSTRAINT endpoint_pk PRIMARY KEY (id),
+	CONSTRAINT endpoint_uk UNIQUE (row_id),
+	CONSTRAINT endpoint_fk_protocol FOREIGN KEY (protocol_id) REFERENCES public.protocol(id)
+);
+CREATE INDEX endpoint_id_idx ON public.endpoint USING btree (id);

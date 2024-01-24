@@ -1,0 +1,15 @@
+using GenericOData.Application.Models.V1.DataModels;
+using GenericOData.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace GenericOData.Api.Controllers.v1
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class <#controllerName#>Controller : CrudBaseController<<#modelName#>>
+    {
+        public <#controllerName#>Controller(IRepository<<#modelName#>> repository) : base(repository)
+        {
+        }
+    }
+}
