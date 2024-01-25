@@ -1,3 +1,6 @@
+
+The implemented solution is a generic API that serves as a data access layer for any project. Initially, it is built to communicate directly with a PostgreSQL database, but it can be extended to interact with other databases as well.
+
 To generate models using the scaffold command in VS Code, you need to execute the following command:
 
 ```
