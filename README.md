@@ -29,7 +29,7 @@ To run the API
 Sample scaffold command:
 
 ```
-dotnet ef dbcontext scaffold "Server=localhost; Port=2024; Database=mytestdb01; User Id=test; Password=valgen@123;" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f
+dotnet ef dbcontext scaffold "Server=localhost; Port=2024; Database=mytestdb01; User Id=test; Password=12345;" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f
 ```
 
 To run a local PostgreSQL database in Docker, execute the following command:
