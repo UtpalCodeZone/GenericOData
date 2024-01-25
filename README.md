@@ -1,36 +1,37 @@
-# GenericOData
-Generic Api using OData 8
-# When execute scaffold command through vs code need to execute below type command to generate models
+To generate models using the scaffold command in VS Code, you need to execute the following command:
 
-dotnet ef dbcontext scaffold "Server=<server ip / localhost>; Port=<port number>; Database=<Database name>; User Id=<user name>; Password=<password>;" 
-Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations 
---use-database-names --no-onconfiguring -f
+```
+dotnet ef dbcontext scaffold "Server=<server ip / localhost>; Port=<port number>; Database=<Database name>; User Id=<user name>; Password=<password>;" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f
+```
 
-# When execute scaffold command through visual studio need to execute below type command to generate models
+To generate models using the scaffold command in Visual Studio, you need to execute the following command:
 
-dotnet ef dbcontext scaffold "Server=<server ip / localhost>; Port=<port number>; Database=<Database name>; User Id=<user name>; Password=<password>;" 
-Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations 
---use-database-names --no-onconfiguring -f --project <.csprog project path for GenericOData.Application>
+```
+dotnet ef dbcontext scaffold "Server=<server ip / localhost>; Port=<port number>; Database=<Database name>; User Id=<user name>; Password=<password>;" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f --project <.csproj project path for GenericOData.Application>
+```
 
-# once above scaffold command executed then execute powershell script "GenerateFile.ps1"
+Once the scaffold command has been executed, you need to run the PowerShell script "GenerateFile.ps1".
 
-# To execute the powershell script follow below steps.
-# step 1: Open window powershell
-# step 2: Go to the GenericOData.Application directory where the script "GenerateFile.ps1" exist.
-# step 2: execute command --- powershell.exe .\GenerateFile.ps1
+To execute the PowerShell script, follow these steps:
+1. Open a Windows PowerShell window.
+2. Navigate to the directory where the script "GenerateFile.ps1" exists (GenericOData.Application).
+3. Execute the command: `powershell.exe .\GenerateFile.ps1`
 
-## Now you are ready to use odata api's
+Now you are ready to use the OData APIs.
 
+To run the API
+1. Navigate to the API directory (GenericOData.Api).
+2. Execute the command: `dotnet run`
 
-# Sample scaffold command
+Sample scaffold command:
 
-dotnet ef dbcontext scaffold "Server=localhost; Port=2024; Database=mytestdb01; User Id=test; Password=valgen@123;" Npgsql.EntityFrameworkCore.PostgreSQL 
---output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f
+```
+dotnet ef dbcontext scaffold "Server=localhost; Port=2024; Database=mytestdb01; User Id=test; Password=valgen@123;" Npgsql.EntityFrameworkCore.PostgreSQL --output-dir Models/V1/DataModels --context-dir "DbContexts/V1" --context "ApiDbContext" --data-annotations --use-database-names --no-onconfiguring -f
+```
 
+To run a local PostgreSQL database in Docker, execute the following command:
 
-# To run local postgres db in docker execute below code using docker command
-# execute docker-compose.yml file from GenericOData.Core/Sample and follow the below command
-
-docker volume create mycitiusdata  
+```
+docker volume create mycitiusdata
 docker-compose -p citus up -d
-
+```
